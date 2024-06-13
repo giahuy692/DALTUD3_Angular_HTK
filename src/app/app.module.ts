@@ -47,7 +47,9 @@ import { ManagerUserComponent } from './p-shop/pages/manager-user/manager-user.c
 import { ManagerProductComponent } from './p-shop/pages/manager-product/manager-product.component';
 import { ManagerCartComponent } from './p-shop/pages/manager-cart/manager-cart.component';
 import { DialogsModule } from '@progress/kendo-angular-dialog';
-
+import { ProductListComponent } from './p-shop/pages/product-list/product-list.component';
+import { LoadingDirective } from './p-shop/share/drirective/loading.directive';
+import { LoadingComponent } from './p-shop/share/components/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +80,9 @@ import { DialogsModule } from '@progress/kendo-angular-dialog';
     CoupleComponent,
     CheckoutComponent,
     GridBlockComponent,
+    ProductListComponent,
+    LoadingDirective,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,

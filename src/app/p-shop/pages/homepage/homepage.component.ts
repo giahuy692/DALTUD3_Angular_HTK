@@ -9,7 +9,7 @@ import { ShopApiService } from '../../share/services/shop-api.service';
 import { DTOProduct } from '../../share/dtos/DTOProduct';
 import { NotificationService } from '@progress/kendo-angular-notification';
 import { Route, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 export interface Item {
   title?: string;
@@ -36,12 +36,18 @@ export class HomepageComponent implements OnInit {
   public width = '100%';
   public height = '500px';
   private interval: any;
+  isLoading = true;
+  unsubscribe = new Subject<void>();
 
   constructor(
     private apiService: ShopApiService,
     private notificationService: NotificationService,
     private router: Router
-  ) {}
+  ) {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 5000); // Loading spinner will be visible for 5 seconds
+  }
 
   ngOnInit(): void {
     this.GetListProduct(1, 5, undefined);
@@ -73,6 +79,7 @@ export class HomepageComponent implements OnInit {
   GetListProduct(page?: number, pageSize?: number, sort?: string) {
     let GetListProduct = this.apiService
       .GetListProduct(page, pageSize, sort)
+      .pipe(takeUntil(this.unsubscribe))
       .subscribe(
         (v: any) => {
           this.ListProduct = v.products;
@@ -91,5 +98,8 @@ export class HomepageComponent implements OnInit {
     this.arrUnsubscribe.forEach((s) => {
       s?.unsubscribe();
     });
+
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }
